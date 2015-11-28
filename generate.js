@@ -1,18 +1,18 @@
 'use strict';
 
-var fs = require('fs');
-var numberOfServers = process.argv[2] || 100;
-var basePort = process.argv[4] || 3000;
+let fs = require('fs');
+let numberOfServers = process.argv[2] || 10;
+let basePort = process.argv[4] || 3000;
 
 const CONFIG = 'config.json';
 
-var output = {
+let output = {
 	ids: [],
 	data: {}
 };
 
-for (var i = 1; i <= numberOfServers; i++) {
-	var thisPort = basePort + i;
+for (let i = 1; i <= numberOfServers; i++) {
+	let thisPort = basePort + i;
 	output.ids.push(thisPort);
 	output.data[thisPort] = generateGraphEntry(i, thisPort);
 }
@@ -26,7 +26,7 @@ fs.writeFile(CONFIG, JSON.stringify(output, null, 2), function(err) {
 });
 
 function generateGraphEntry(index, port) {
-	var graph = {};
+	let graph = {};
 
 	if (index > 1) {
 		graph.left = port - 1;

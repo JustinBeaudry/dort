@@ -1,24 +1,26 @@
+'use strict';
+
 const Hapi = require('hapi');
 const winston = require('winston');
 const request = require('request');
 
-var id = process.argv[4];
-var port = process.argv[3];
-var configFile = process.argv[2];
+let id = process.argv[4];
+let port = process.argv[3];
+let configFile = process.argv[2];
 const config = require(configFile);
 
-var graph = config.data[port];
+let graph = config.data[port];
 
 const server = new Hapi.Server();
 
 server.connection({ port: port });
 
 // state
-var round = 1;
-var value = graph.value;
-var messages = {};
-var haveSent = false;
-var havePosted = false;
+let round = 1;
+let value = graph.value;
+let messages = {};
+let haveSent = false;
+let havePosted = false;
 
 server.route({
 	method: 'POST',
@@ -37,7 +39,7 @@ server.start(function(err) {
 function act(timeout) {
 //	console.info('\n\n============ haveSent %s & haveRecieved %s on server %d on round %d===========\n\n', haveSent.toString(), haveRecieved().toString(), id, round);
 	if (round === config.ids.length + 1 && !havePosted) {
-		console.info('\n\nThe Sorted Value for server %d equals %s\n\n', id, value);
+		console.info('server %d equals %s', id, value);
 		console.timeEnd('Value Sorted');
 		havePosted = true;
 		return;
@@ -61,17 +63,17 @@ function act(timeout) {
 }
 
 function sendToNeighbor(timeout) {
-	var port = getNeighborPort();
+	let port = getNeighborPort();
 	if (!port) {
 		haveSent = true;
-		// set an empty message for the round
+		// just send a message for the round
 		messages[round] = {
 			round: round,
 			value: value
 		};
 		return act(0);
 	}
-//	console.info('\n\n===== sending message on server %s to server %d on round %d\n\n', id, port.toString().charAt(3), round);
+//	console.info('\n\n===== sending message on server %s to server %d on round %d\n\n', id, port.toString(), round);
 	request.post({
 		url: 'http://localhost:' + port,
 		body: {
@@ -80,7 +82,7 @@ function sendToNeighbor(timeout) {
 			value: value
 		},
 		json: true
-	}, function(err, response, body) {
+	}, function(err) {
 		if (err) {
 			console.error(err);
 			timeout += 1000;
@@ -101,7 +103,7 @@ function isOdd(value) {
 }
 
 function getNeighborPort() {
-	var position = getPosition();
+	let position = getPosition();
 	if (position === 'left') {
 		return graph.right;
 	} else {
@@ -129,7 +131,7 @@ function handleMessage(request, reply) {
 }
 
 function storeMessage(request) {
-	var message = request.payload;
+	let message = request.payload;
 
 //	console.info(JSON.stringify(message, null, 2));
 	if (!messages[message.round]) {
