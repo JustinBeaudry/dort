@@ -1,7 +1,7 @@
 'use strict';
 
 let fs = require('fs');
-let numberOfServers = process.argv[2] || 10;
+let numberOfServers = +(process.argv[2]) || 10;
 let basePort = +(process.argv[3]) || 3000;
 
 const CONFIG = 'config.json';
