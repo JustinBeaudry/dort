@@ -18,6 +18,7 @@ var round = 1;
 var value = graph.value;
 var messages = {};
 var haveSent = false;
+var havePosted = false;
 
 server.route({
 	method: 'POST',
@@ -34,8 +35,9 @@ server.start(function(err) {
 
 function act(timeout) {
 	console.info('\n\n============ haveSent %s & haveRecieved %s on server %d on round %d===========\n\n', haveSent.toString(), haveRecieved().toString(), id, round);
-	if (round === config.ids.length + 1) {
+	if (round === config.ids.length + 1 && !havePosted) {
 		console.info('\n\nThe Sorted Value for server %d equals %s\n\n', id, value);
+		havePosted = true;
 		return;
 	}
 	if (!haveSent) {
