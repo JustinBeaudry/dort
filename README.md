@@ -9,6 +9,6 @@ the `.nvmrc` defaults the project to node `5.0`
 
 #Use
 
-`npm generate` to generate graph
+`npm run generate` to generate graph
 
-`npm start` to start the servers
+`npm run start` to start the servers
