@@ -5,7 +5,8 @@
   "main": "startup.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --debug startup.js ./config.json server.js"
+    "start": "node startup.js ./config.json server.js > output.log",
+    "generate": "node generate.js"
   },
   "repository": {
     "type": "git",

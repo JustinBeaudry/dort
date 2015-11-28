@@ -30,13 +30,15 @@ server.start(function(err) {
 	if (err) {
 		console.error(err);
 	}
+	console.time('Value Sorted');
 	act(0);
 });
 
 function act(timeout) {
-	console.info('\n\n============ haveSent %s & haveRecieved %s on server %d on round %d===========\n\n', haveSent.toString(), haveRecieved().toString(), id, round);
+//	console.info('\n\n============ haveSent %s & haveRecieved %s on server %d on round %d===========\n\n', haveSent.toString(), haveRecieved().toString(), id, round);
 	if (round === config.ids.length + 1 && !havePosted) {
 		console.info('\n\nThe Sorted Value for server %d equals %s\n\n', id, value);
+		console.timeEnd('Value Sorted');
 		havePosted = true;
 		return;
 	}
@@ -45,7 +47,7 @@ function act(timeout) {
 	}
 
 	if (haveSent && haveRecieved()) {
-		console.info('\n\n\n\n ============ SERVER %d DONE WITH ROUND %d =============\n\n\n\n', id, round);
+//		console.info('\n\n\n\n ============ SERVER %d DONE WITH ROUND %d =============\n\n\n\n', id, round);
 		// exchange
 		if (getPosition() === 'left') {
 			takeIfLess(messages[round]);
@@ -69,7 +71,7 @@ function sendToNeighbor(timeout) {
 		};
 		return act(0);
 	}
-	console.info('\n\n===== sending message on server %s to server %d on round %d\n\n', id, port.toString().charAt(3), round);
+//	console.info('\n\n===== sending message on server %s to server %d on round %d\n\n', id, port.toString().charAt(3), round);
 	request.post({
 		url: 'http://localhost:' + port,
 		body: {
@@ -120,7 +122,7 @@ function takeIfGreater(message) {
 }
 
 function handleMessage(request, reply) {
-	console.info('\n\n==== message recieved on server %s from server %d on round %d\n\n', id, request.payload.id, round);
+//	console.info('\n\n==== message recieved on server %s from server %d on round %d\n\n', id, request.payload.id, round);
 	storeMessage(request);
 	reply(id);
 	act(0);
@@ -129,11 +131,11 @@ function handleMessage(request, reply) {
 function storeMessage(request) {
 	var message = request.payload;
 
-	console.info(JSON.stringify(message, null, 2));
+//	console.info(JSON.stringify(message, null, 2));
 	if (!messages[message.round]) {
 		messages[message.round] = message;
 	} else {
-		console.error('value already set for round');
+//		console.error('value already set for round');
 	}
 }
 
