@@ -2,7 +2,7 @@
 
 let fs = require('fs');
 let numberOfServers = process.argv[2] || 10;
-let basePort = process.argv[4] || 3000;
+let basePort = +(process.argv[3]) || 3000;
 
 const CONFIG = 'config.json';
 
@@ -12,7 +12,7 @@ let output = {
 };
 
 for (let i = 1; i <= numberOfServers; i++) {
-	let thisPort = basePort + i;
+	let thisPort = +(basePort + i);
 	output.ids.push(thisPort);
 	output.data[thisPort] = generateGraphEntry(i, thisPort);
 }

@@ -18,7 +18,7 @@ server.connection({ port: port });
 // state
 let round = 1;
 let value = graph.value;
-let messages = {};
+let messages = {}
 let haveSent = false;
 let havePosted = false;
 
@@ -32,15 +32,15 @@ server.start(function(err) {
 	if (err) {
 		console.error(err);
 	}
-	console.time('Value Sorted');
+	console.time('time');
 	act(0);
 });
 
 function act(timeout) {
 //	console.info('\n\n============ haveSent %s & haveRecieved %s on server %d on round %d===========\n\n', haveSent.toString(), haveRecieved().toString(), id, round);
 	if (round === config.ids.length + 1 && !havePosted) {
-		console.info('server %d equals %s', id, value);
-		console.timeEnd('Value Sorted');
+		console.info('server %d, value %s', id, value);
+		console.timeEnd('time');
 		havePosted = true;
 		return;
 	}
