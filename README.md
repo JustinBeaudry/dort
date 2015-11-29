@@ -18,4 +18,4 @@ the `.nvmrc` defaults the project to node `5.0`
 
 `npm run start` to start the servers
 
-NOTE that enabling any log messaging in the server.js breaks the startup.js auto-kill and log script
+__NOTE that enabling any log messaging in the server.js breaks the startup.js auto-kill and log script__
