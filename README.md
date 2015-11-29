@@ -14,7 +14,7 @@ the `.nvmrc` defaults the project to node `5.0`
 
 #Use
 
-`npm run generate` to generate graph
+`npm run generate <number of servers | default to 10> <base port | defaults to 3000>` to generate graph
 
 `npm run start` to start the servers
 
