@@ -57,18 +57,20 @@ function destroyNodes() {
 }
 
 function findServerNumber(data) {
-	return +(findItem(data, 'server'));
+	return +(findValue(data, 'server'));
 }
 
 function findServerValue(data) {
-	return +(findItem(data, 'value'));
+	return +(findValue(data, 'value'));
 }
 
-function findItem(item, match) {
-	var regExp = new RegExp('\\d+(?=.' + match + ')');
-	var found = item.match(regExp);
-	if (found && found[0]) {
-		return found[0];
+// find value with format:
+// <value> <identifier>, e.g. 8 server
+function findValue(item, identifier) {
+	var regExp = new RegExp('\\d+(?=.' + identifier + ')');
+	var match = item.match(regExp);
+	if (match && match[0]) {
+		return match[0];
 	}
 	return null;
 }
