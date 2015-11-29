@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node startup.js ./config.json server.js",
     "generate": "node generate.js",
-    "clean": "rm config.json;rm output.log"
+    "clean": "rm config.json;rm output.json"
   },
   "repository": {
     "type": "git",

@@ -44,8 +44,8 @@ function checkIfComplete() {
 	if (Object.keys(server).length === nodes.length) {
 		console.info('Operation Complete!\n');
 		destroyNodes();
-		console.info('\nWriting output to output.log\n');
-		fs.writeFileSync('output.log', JSON.stringify(server, null, 2));
+		console.info('\nWriting output to output.json\n');
+		fs.writeFileSync('output.json', JSON.stringify(server, null, 2));
 	}
 }
 
