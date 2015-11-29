@@ -1,8 +1,8 @@
 'use strict';
 
-const Hapi = require('hapi');
-const winston = require('winston');
-const request = require('request');
+let Hapi = require('hapi');
+let winston = require('winston');
+let request = require('request');
 
 let id = process.argv[4];
 let port = process.argv[3];
@@ -21,6 +21,9 @@ let value = graph.value;
 let messages = {}
 let haveSent = false;
 let havePosted = false;
+function done() {
+	return round === config.nodes.length;
+}
 
 server.route({
 	method: 'POST',
@@ -32,39 +35,46 @@ server.start(function(err) {
 	if (err) {
 		console.error(err);
 	}
-	console.time('time');
+//	console.time('server: ' + id + ', time');
 	act(0);
 });
 
 function act(timeout) {
-//	console.info('\n\n============ haveSent %s & haveRecieved %s on server %d on round %d===========\n\n', haveSent.toString(), haveRecieved().toString(), id, round);
-	if (round === config.ids.length + 1 && !havePosted) {
-		console.info('server %d, value %s', id, value);
-		console.timeEnd('time');
-		havePosted = true;
-		return;
-	}
-	if (!haveSent) {
-		return sendToNeighbor(timeout);
-	}
-
-	if (haveSent && haveRecieved()) {
-//		console.info('\n\n\n\n ============ SERVER %d DONE WITH ROUND %d =============\n\n\n\n', id, round);
-		// exchange
-		if (getPosition() === 'left') {
-			takeIfLess(messages[round]);
-		} else if (getPosition() === 'right') {
-			takeIfGreater(messages[round]);
+//	console.info('============ haveSent %s & haveRecieved %s on server %d on round %d===========\n\n', haveSent.toString(), haveRecieved().toString(), id, round);
+	if (done()) {
+		if (!havePosted) {
+//			console.info('SERVER %d COMPLETE', id);
+			console.info('%d server %s value', id, value);
+//			console.timeEnd('server: ' + id + ', time');
+			havePosted = true;
 		}
-		round = round + 1;
-		haveSent = false;
-		act(0);
+		return;
+	} else {
+		if (!haveSent) {
+			return sendToNeighbor(timeout);
+		}
+
+		if (haveSent && haveRecieved()) {
+//			console.info('\n\n\n\n ============ SERVER %d DONE WITH ROUND %d =============\n\n\n\n', id, round);
+			// exchange
+			if (getPosition() === 'left') {
+				takeIfLess(messages[round]);
+			} else if (getPosition() === 'right') {
+				takeIfGreater(messages[round]);
+			}
+			if (round <= config.nodes.length) {
+				round = round + 1;
+				haveSent = false;
+			}
+			act(0);
+		}
 	}
 }
 
 function sendToNeighbor(timeout) {
 	let port = getNeighborPort();
 	if (!port) {
+//		console.info('Server %d has no neighbor for Round %d', id, round);
 		haveSent = true;
 		// just send a message for the round
 		messages[round] = {

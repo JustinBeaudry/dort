@@ -7,13 +7,13 @@ let basePort = +(process.argv[3]) || 3000;
 const CONFIG = 'config.json';
 
 let output = {
-	ids: [],
+	nodes: [],
 	data: {}
 };
 
 for (let i = 1; i <= numberOfServers; i++) {
 	let thisPort = +(basePort + i);
-	output.ids.push(thisPort);
+	output.nodes.push(thisPort);
 	output.data[thisPort] = generateGraphEntry(i, thisPort);
 }
 

@@ -3,3 +3,4 @@ node_modules
 .DS_STORE
 config.json
 output.log
+npm-debug.log
